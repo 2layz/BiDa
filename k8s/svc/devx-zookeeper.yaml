@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devx-zookeeper
+  namespace: devx
+  labels:
+    app: devx-zookeeper-coordinator
+spec:
+  ports:
+  - port: 2181
+    targetPort: 2181
+    protocol: TCP
+  selector:
+    app: devx-zookeeper-coordinator
+
+  externalIPs: ["192.168.228.134"]

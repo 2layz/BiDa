@@ -1,0 +1,40 @@
+Kubernetes setup:
+
+apt-get update
+
+apt-get install -y docker.io
+
+apt-get update && apt-get install -y apt-transport-https
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+apt-get update
+
+apt-get install -y kubelet kubeadm kubectl
+
+kubeadm init --pod-network-cidr=192.168.0.0/16 --token-ttl 0
+
+mkdir -p $HOME/.kube
+
+cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+chown $(id -u):$(id -g) $HOME/.kube/config
+
+export KUBECONFIG=/etc/kubernetes/admin.conf
+
+kubectl apply -f https://docs.projectcalico.org/v2.6/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
+
+kubectl taint nodes --all node-role.kubernetes.io/master-
+
+kubeadm join --token d2e75b.4150636d7d6648ce 192.168.228.134:6443 --discovery-token-ca-cert-hash sha256:64b2cfdfa57a00adc4bdf7f7b487c4663693765a03a6c9cd24c65e0f5b951825 --ignore-preflight-errors=all
+
+vi /etc/kubernetes/manifests/kube-apiserver.yaml
+   --> Replace value of authorizationMode to "AlwaysAllow"
+   --> Change cpu reservation to "500m"
+   
+restart VM
+
+

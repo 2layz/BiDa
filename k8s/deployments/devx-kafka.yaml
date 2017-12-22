@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devx-kafka-messagebus
+  namespace: devx
+spec:
+  selector:
+    matchLabels:
+      app: devx-kafka-messagebus
+  template:
+    metadata:
+      labels:
+        app: devx-kafka-messagebus
+    spec:
+      containers:
+       - name: devx-kafka
+         image: devx/kafka_2.12:v1.0.0
+         imagePullPolicy: Never
+         env:
+         - name: KAFKA_TOPICS
+           value: "ruleChangeTrigger:1:1,test:1:1"
+         - name: LISTENER_PORT
+           value: "9092"
+         - name: LISTENER_HOST_NAME
+           value: "192.168.228.134"
+         - name: BROKER_ID
+           value: "666"
+         - name: ZOOKEEPER_HOST_NAME
+           value: "devx-zookeeper.devx"
+
+         resources:
+           requests:
+             cpu: 125m
+             memory: 256Mi
+           limits:
+             #cpu: 500m
+             memory: 512Mi
+
