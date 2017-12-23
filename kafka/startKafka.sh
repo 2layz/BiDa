@@ -4,6 +4,8 @@ sed -i 's/LISTENER_HOST_NAME/'"$LISTENER_HOST_NAME"'/g' /opt/kafka_2.12-1.0.0/co
 sed -i 's/LISTENER_PORT/'"$LISTENER_PORT"'/g' /opt/kafka_2.12-1.0.0/config/server.properties 
 sed -i 's/ZOOKEEPER_HOST_NAME/'"$ZOOKEEPER_HOST_NAME"'/g' /opt/kafka_2.12-1.0.0/config/server.properties 
 
+sleep 15s
+
 if [[ -z $BROKER_ID ]]
 then
 	sed -i 's/BROKER_ID/'"$HOSTNAME| awk -F'-' '{print $2}'"'/g' /opt/kafka_2.12-1.0.0/config/server.properties 

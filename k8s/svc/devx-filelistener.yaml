@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devx-file-listener
+  namespace: devx
+  labels:
+    app: devx-file-listener
+spec:
+  ports:
+  - name: filelistener
+    port: 18080
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: devx-file-listener
+
+ # externalIPs: ["192.168.228.134"]
+

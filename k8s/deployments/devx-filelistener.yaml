@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devx-file-listener
+  namespace: devx
+spec:
+  selector:
+    matchLabels:
+      app: devx-file-listener
+  template:
+    metadata:
+      labels:
+        app: devx-file-listener
+    spec:
+      containers:
+       - name: devx-file-listener
+         image: devx/filewatcher:v1.0.0
+         imagePullPolicy: Never
+
+         env:
+         - name: KAFKA_PORT
+           value: "9092"
+         - name: KAFKA_HOST
+           value: "192.168.228.134"
+         - name: RULES_DATA_DIR
+           value: "/data/rules"
+         - name: FILES_2_WATCH
+           value: "/data/ssl_rules.json"
+
+         volumeMounts:
+         - name: firewall-volume
+           mountPath: /data/
+
+         resources:
+           requests:
+             cpu: 125m
+             memory: 64Mi
+           limits:
+             #cpu: 500m
+             memory: 128Mi
+

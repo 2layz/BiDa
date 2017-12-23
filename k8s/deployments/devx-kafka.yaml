@@ -18,7 +18,7 @@ spec:
          imagePullPolicy: Never
          env:
          - name: KAFKA_TOPICS
-           value: "ruleChangeTrigger:1:1,test:1:1"
+           value: "ruleChangeTrigger:2:1,test:1:1"
          - name: LISTENER_PORT
            value: "9092"
          - name: LISTENER_HOST_NAME

@@ -1,4 +1,4 @@
 FROM scratch
-ADD target/mockServer /opt/mockServer
+ADD ../target/fileWatcher /opt/fileWatcher
 EXPOSE 8080
-ENTRYPOINT ["/opt/mockServer"]
+ENTRYPOINT ["/opt/fileWatcher"]

@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-var DATA_DIR_ENV string = "rules_data_dir"
-var FILES_2_WATCH string = "files_2_watch"
+var DATA_DIR_ENV string = "RULES_DATA_DIR"
+var FILES_2_WATCH string = "FILES_2_WATCH"
 
 func StartWatching() {
 	//data_dir := os.Getenv(DATA_DIR_ENV);
