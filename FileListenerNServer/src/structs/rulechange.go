@@ -3,6 +3,6 @@ package structs
 import "time"
 
 type FileContent struct {
-	Content   string
-	Timestamp time.Time
+	Content   string    `json:"contents"` 
+	Timestamp time.Time `json:"timestamp"`
 }
