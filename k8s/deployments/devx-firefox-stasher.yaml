@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: devx-file-listener
+  name: devx-firefox-stasher
   namespace: devx
 spec:
   selector:
     matchLabels:
-      app: devx-file-listener
+      app: devx-firefox-stasher
   template:
     metadata:
       labels:
-        app: devx-file-listener
+        app: devx-firefox-stasher
     spec:
       containers:
-       - name: devx-file-listener
-         image: devx/filewatcher:v1.0.0
+       - name: devx-firefox-stasher
+         image: devx/firefox_stasher:v1.0.0
          imagePullPolicy: Never
 
          env:
@@ -22,10 +22,10 @@ spec:
            value: "9092"
          - name: KAFKA_HOST
            value: "devx-kafka.devx"
-         - name: RULES_DATA_DIR
-           value: "/data/rules"
-         - name: FILES_2_WATCH
-           value: "/data/ssl_rules.json"
+         - name: FIREFOX_LOG_FILE
+           value: "/data/firefox.log-main.*"
+         - name: FIREFOX_TOPIC
+           value: "firefoxRequests"
 
          volumeMounts:
          - name: firewall-volume
@@ -37,5 +37,5 @@ spec:
              memory: 64Mi
            limits:
              #cpu: 500m
-             memory: 128Mi
+             memory: 256Mi
 

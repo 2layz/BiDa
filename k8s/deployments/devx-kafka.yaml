@@ -18,11 +18,11 @@ spec:
          imagePullPolicy: Never
          env:
          - name: KAFKA_TOPICS
-           value: "ruleChangeTrigger:2:1,test:1:1"
+           value: "ruleChangeTrigger:1:1,firefoxRequests:2:1,test:1:1"
          - name: LISTENER_PORT
            value: "9092"
          - name: LISTENER_HOST_NAME
-           value: "192.168.228.134"
+           value: "devx-kafka.devx"
          - name: BROKER_ID
            value: "666"
          - name: ZOOKEEPER_HOST_NAME
@@ -33,6 +33,5 @@ spec:
              cpu: 125m
              memory: 256Mi
            limits:
-             #cpu: 500m
              memory: 512Mi
 

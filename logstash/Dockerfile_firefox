@@ -1,0 +1,6 @@
+FROM library/logstash:5-alpine
+ADD firefox/firefox_logstasher.conf /usr/share/logstash/bin/config/firefox_logstasher.conf
+ADD startStasher.sh /usr/share/logstash/bin/startStasher.sh
+RUN chmod +x /usr/share/logstash/bin/startStasher.sh
+WORKDIR /usr/share/logstash/
+CMD ["/usr/share/logstash/bin/startStasher.sh"]
