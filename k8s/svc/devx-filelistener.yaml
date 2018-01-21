@@ -8,11 +8,10 @@ metadata:
 spec:
   ports:
   - name: filelistener
-    port: 18080
+    port: 9000
     targetPort: 8080
     protocol: TCP
   selector:
     app: devx-file-listener
 
- # externalIPs: ["192.168.228.134"]
-
+  externalIPs: ["192.168.228.134"]

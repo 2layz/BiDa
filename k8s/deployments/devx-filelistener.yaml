@@ -11,23 +11,58 @@ spec:
     metadata:
       labels:
         app: devx-file-listener
+      annotations:
+        io.cadvisor.metric.prometheus: /etc/custom-metrics/definition.json
+
     spec:
+      volumes:
+       - name: config
+         emptyDir:
+
+       - name: firewall-volume
+         persistentVolumeClaim:
+           claimName: firewall-volume-claim
+
+      initContainers:
+       - name: init-myservice
+         image: busybox
+         command: ['sh', '-c', 'echo "{\"endpoint\": \"http://192.168.228.134:9000/metrics\"}" > /etc/custom-metrics/definition.json']
+
+         env: 
+         - name: POD_IP
+           valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+         
+
+         volumeMounts:
+         - name: config
+           mountPath: /etc/custom-metrics
+
       containers:
        - name: devx-file-listener
-         image: devx/filewatcher:v1.0.0
+         image: devx/filewatcher:v1.0.3
          imagePullPolicy: Never
+         ports:
+         - containerPort: 8080
+           hostPort: 9000
 
          env:
          - name: KAFKA_PORT
            value: "9092"
          - name: KAFKA_HOST
-           value: "devx-kafka.devx"
+           value: "192.168.228.134"
          - name: RULES_DATA_DIR
            value: "/data/rules"
          - name: FILES_2_WATCH
            value: "/data/ssl_rules.json"
+         - name: ROLE
+           value: "publisher"
 
          volumeMounts:
+         - name: config
+           mountPath: /etc/custom-metrics
          - name: firewall-volume
            mountPath: /data/
 

@@ -22,7 +22,7 @@ spec:
          - name: DEVX_KAFKA_SERVICE_PORT
            value: "9092"
          - name: DEVX_KAFKA_SERVICE_HOST
-           value: "devx-kafka.devx"
+           value: "192.168.228.134"
 
          resources:
            requests:

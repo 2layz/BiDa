@@ -22,11 +22,11 @@ spec:
          - name: LISTENER_PORT
            value: "9092"
          - name: LISTENER_HOST_NAME
-           value: "devx-kafka.devx"
+           value: "192.168.228.134"
          - name: BROKER_ID
            value: "666"
          - name: ZOOKEEPER_HOST_NAME
-           value: "devx-zookeeper.devx"
+           value: "192.168.228.134"
 
          resources:
            requests:
