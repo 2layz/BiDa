@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devx-file-server
+  namespace: devx
+spec:
+  selector:
+    matchLabels:
+      app: devx-file-server
+  template:
+    metadata:
+      labels:
+        app: devx-file-server
+    spec:
+      volumes:
+       - name: firewall-volume
+         persistentVolumeClaim:
+           claimName: firewall-volume-claim
+
+      containers:
+       - name: devx-file-server
+         image: devx/filewatcher:v1.0.3
+         imagePullPolicy: Never
+
+         env:
+         - name: RULES_DATA_DIR
+           value: "/data/rules"
+         - name: ROLE
+           value: "fileserver"
+
+         volumeMounts:
+         - name: firewall-volume
+           mountPath: /data/
+
+         resources:
+           requests:
+             cpu: 125m
+             memory: 64Mi
+           limits:
+             #cpu: 500m
+             memory: 128Mi
+
