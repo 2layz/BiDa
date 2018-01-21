@@ -7,10 +7,12 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"os"
 	"strings"
+	"net/http"
 )
 
 var DATA_DIR_ENV string = "RULES_DATA_DIR"
 var FILES_2_WATCH string = "FILES_2_WATCH"
+var PublishedMsgCount = 0
 
 func StartWatching() {
 	//data_dir := os.Getenv(DATA_DIR_ENV);
@@ -30,6 +32,7 @@ func StartWatching() {
 				if event.Op&fsnotify.Write == fsnotify.Write {
 					fmt.Println("modified file:", event.Name)
 					filepublisher.PublishFile(event.Name)
+					PublishedMsgCount++
 				}
 			case err := <-watcher.Errors:
 				fmt.Println("error:", err)
@@ -40,6 +43,11 @@ func StartWatching() {
 	addWatchers(watcher)
 
 	<-done
+}
+
+func HandleMetrics(w http.ResponseWriter){
+	fmt.Fprintf(w, "# TYPE msg gauge\nmsg %d\n" , PublishedMsgCount )
+	PublishedMsgCount = 0;
 }
 
 func addWatchers(watcher *fsnotify.Watcher) {

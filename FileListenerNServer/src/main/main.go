@@ -32,12 +32,16 @@ func main() {
            fmt.Println("Starting PUBLISHER...")
 	   http.HandleFunc("/metrics/", func(w http.ResponseWriter, r *http.Request) {
     		fmt.Println("----------------  Servicing metrics request  --------------")
-    		msg := 10
-    		fmt.Fprintf(w, "# TYPE msg gauge\nmsg %d\n" , msg )
-
+    		filewatcher.HandleMetrics(w)
 	   })
 	   go filewatcher.StartWatching()
 	}
+
+	http.HandleFunc("/config/", func(w http.ResponseWriter, r *http.Request) {
+		for _, e := range os.Environ() {
+			fmt.Fprintln(w,e)
+		}
+	})
 	fmt.Println("Listening...")
 	http.ListenAndServe(":8080", nil)
 
