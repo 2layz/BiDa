@@ -14,5 +14,5 @@ spec:
   selector:
     app: devx-file-server
 
- # externalIPs: ["192.168.228.134"]
+  externalIPs: ["192.168.228.134"]
 

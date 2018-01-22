@@ -19,14 +19,16 @@ spec:
 
       containers:
        - name: devx-file-server
-         image: devx/filewatcher:v1.0.3
+         image: devx/filewatcher:v1.0.4
          imagePullPolicy: Never
 
          env:
-         - name: RULES_DATA_DIR
-           value: "/data/rules"
          - name: ROLE
            value: "fileserver"
+         envFrom:
+         - configMapRef:
+             name: filex-config
+
 
          volumeMounts:
          - name: firewall-volume
