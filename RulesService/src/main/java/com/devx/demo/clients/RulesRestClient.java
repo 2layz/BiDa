@@ -1,15 +1,14 @@
 package com.devx.demo.clients;
 
-import com.devx.demo.mongodocs.Rule;
+import com.devx.demo.mongodocs.RuleDTO;
 import com.devx.demo.mongorepos.RulesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.time.Instant;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -19,23 +18,66 @@ public class RulesRestClient {
     RulesRepository rulesRepository;
 
     @RequestMapping("/get/rules")
-    public List<Rule> getRules(){
+    public List<RuleDTO> getRules(){
         if (rulesRepository == null){
             System.out.println("Repo is null !");
             System.out.println("Check connection to DB !");
-            return new ArrayList<Rule>();
+            return new ArrayList<RuleDTO>();
         }else if(rulesRepository.findAll()==null){
             System.out.println("Nothing to show here !");
-            return new ArrayList<Rule>();
+            return new ArrayList<RuleDTO>();
         }
         return rulesRepository.findAll();
     }
 
-    /*@RequestMapping("/add/samplerule")
-    public String addRules(){
-       Rule newRule = new Rule(new Random().nextInt(),"10.12.3","10.13.3","80","Allow" ,new Date());
-       rulesRepository.save(newRule);
-       return "Added sample Rule !";
-    }*/
+    @RequestMapping("/add/TCP")
+    public String addTCPRule(){
+        RuleDTO newRule = new RuleDTO("TCP","10.12.3","true","default","80" ,new Date());
+        rulesRepository.save(newRule);
+        return "Added TCP sample Rule !";
+    }
 
+    @RequestMapping("/add/UDP")
+    public String addUDPRule(){
+        RuleDTO newRule = new RuleDTO("UDP","10.12.3","true","default","80" ,new Date());
+        rulesRepository.save(newRule);
+        return "Added UDP sample Rule !";
+    }
+
+    @RequestMapping("/get/counts")
+    public String getCounts(){
+        List<RuleDTO> tcpRList = rulesRepository.findByProtocol("TCP");
+        List<RuleDTO> udpRList = rulesRepository.findByProtocol("UDP");
+        return String.format("UDP: %s TCP: %s" , udpRList.size(), tcpRList.size());
+    }
+
+    @RequestMapping("/delAllRules")
+    public String delRules(){
+        rulesRepository.deleteAll();
+        return String.format("Deleted all Rules !");
+    }
+
+    @RequestMapping("/get/forTimestamp/{ts}")
+    public List<RuleDTO> getRuleForTS(@PathVariable("ts") long ts){
+        return rulesRepository.findByTimestamp(Date.from(Instant.ofEpochMilli(ts))) ;
+    }
+
+    @RequestMapping("/get/countForTimestamp/{ts}")
+    public int getCountForTS(@PathVariable("ts") long ts){
+        return rulesRepository.findByTimestamp(Date.from(Instant.ofEpochMilli(ts))).size() ;
+    }
+
+    @RequestMapping("/get/timestamps")
+    public String getUniqTS(){
+        Set<Long> uniqTS = new HashSet<>();
+        List<RuleDTO> rList = rulesRepository.findAll();
+        for (RuleDTO rl:rList ){
+            if (null!=rl.getTimestamp()) uniqTS.add(rl.getTimestamp().toInstant().toEpochMilli() );
+        }
+        List<String> allTS = new ArrayList<>();
+        for (Long ts: uniqTS){
+            allTS.add(ts+" : "+Date.from(Instant.ofEpochMilli(ts)).toString());
+        }
+        return allTS.toString();
+    }
 }
