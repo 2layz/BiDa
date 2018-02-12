@@ -30,13 +30,27 @@
 
     <build>
     <plugins>
+ <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>install</phase>
+                <goals>
+                  <goal>copy-dependencies</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
         <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <configuration>
                 <goal>package</goal>
                 <archive>
                     <manifest>
-                        <mainClass>com.devx.kafka.KafkaConsumerClient</mainClass>
+                        <mainClass>com.devx.rule.parser.RuleChangeListenerApp</mainClass>
                     </manifest>
                 </archive>
                 <descriptorRefs>

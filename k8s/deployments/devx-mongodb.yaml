@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+  namespace: devx
+  labels:
+    apps: devx-mongodb
+spec:
+  selector:
+    matchLabels:
+      app: devx-mongodb
+  replicas: 1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: devx-mongodb
+    spec:
+      containers:
+      - image: mongo
+        name: mongo
+        ports:
+        - containerPort: 27017
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - name: db-volume
+            mountPath: /data/db
+      restartPolicy: Always
+      volumes:
+       - name: db-volume
+         hostPath:
+           path: /data/db
+           type: Directory
+

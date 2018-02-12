@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devx-rules-service
+  namespace: devx
+  labels:
+    app: devx-rules-service
+spec:
+  selector:
+    matchLabels:
+      app: devx-rules-service
+
+  replicas: 1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: devx-rules-service
+    spec:
+      containers:
+      - image: devx/rules-service:v1.0.0
+        name: devx-rules-service
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+

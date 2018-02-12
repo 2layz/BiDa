@@ -19,15 +19,15 @@ public class RulesKafkaConsumer extends KafkaConsumerClient {
 
     @PostConstruct
     public void init() throws InterruptedException{
-        String topic = System.getenv("DEVX_RULES_KAFKA_TOPIC");
-        System.out.println("TOPIC -> "+topic);
+        String topic1 = System.getenv("DEVX_RULES_KAFKA_TOPIC");
+        System.out.println("TOPIC -> "+topic1);
         String bootstrapServers = System.getenv("DEVX_KAFKA_SERVICE_HOST")+":"+System.getenv("DEVX_KAFKA_SERVICE_PORT");
         System.out.println("Bootstrap -> "+bootstrapServers);
-        String consumerName = DEVX_RULES_KAFKA_CONSUMER_NAME;
+        String consumerName = "BURP_RULE_CONSUMERS";
         System.out.println("Name -> "+consumerName);
         this.setBootstrapServers(bootstrapServers);
         this.setConsumerName(consumerName);
-        this.setTopic(topic);
+        this.setTopic(topic1);
         try {
             startConsumer();
         } catch (InterruptedException e) {
