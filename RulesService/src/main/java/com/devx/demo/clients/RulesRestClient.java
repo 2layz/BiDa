@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.Produces;
 import java.time.Instant;
 import java.util.*;
 
@@ -68,16 +69,21 @@ public class RulesRestClient {
     }
 
     @RequestMapping("/get/timestamps")
+    @Produces()
     public String getUniqTS(){
-        Set<Long> uniqTS = new HashSet<>();
+        Set<Long> uniqTS = new LinkedHashSet<>();
         List<RuleDTO> rList = rulesRepository.findAll();
         for (RuleDTO rl:rList ){
             if (null!=rl.getTimestamp()) uniqTS.add(rl.getTimestamp().toInstant().toEpochMilli() );
         }
         List<String> allTS = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        sb.append("<HTML><BODY>");
         for (Long ts: uniqTS){
-            allTS.add(ts+" : "+Date.from(Instant.ofEpochMilli(ts)).toString());
+            sb.append(ts+" : "+Date.from(Instant.ofEpochMilli(ts)).toString()+"</br>");
         }
-        return allTS.toString();
+        sb.append("</BODY></HTML>");
+
+        return sb.toString();
     }
 }
