@@ -5,6 +5,14 @@ metadata:
   namespace: devx
   labels:
     app: devx-rules-service
+  annotations:
+    pod.beta.kubernetes.io/init-containers: '[
+        {
+            "name": "init-myservice",
+            "image": "busybox",
+            "command": ["sh", "-c", "sleep 20"]
+        }
+    ]'
 spec:
   selector:
     matchLabels:

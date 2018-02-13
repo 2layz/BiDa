@@ -1,0 +1,30 @@
+{
+    "proxy":{
+        "ssl_pass_through":{
+            "automatically_add_entries_on_client_ssl_negotiation_failure":false,
+            "rules":[
+                {
+                    "enabled":true,
+                    "file":"^/.*",
+                    "host":"^www\\.google\\.co\\.in$",
+                    "port":"^443$",
+                    "protocol":"https"
+                },
+                {
+                    "enabled":true,
+                    "file":"^/news/.*",
+                    "host":"^news\\.google\\.com$",
+                    "port":"^443$",
+                    "protocol":"http"
+                },
+                {
+                    "enabled":true,
+                    "file":"^/containers/.*",
+                    "host":"^192\\.168\\.228\\.134$",
+                    "port":"^4194$",
+                    "protocol":"http"
+                }
+            ]
+        }
+    }
+}
